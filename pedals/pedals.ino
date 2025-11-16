@@ -32,11 +32,12 @@ HX711 loadcell;
 // Create Joystick
 Joystick_ Joystick(JOYSTICK_DEFAULT_REPORT_ID,
                    JOYSTICK_TYPE_JOYSTICK, BTN_CNT, 0,
-                   false, false, false, false, false, false,
+                   true, // X-Axis
+                   false, false, false, false, false,
                    false, // Rudder
                    false, // Throttle
                    false, // Accelerator
-                   true,  // Brake
+                   false,  // Brake
                    false  // Steering
 );
 
@@ -58,7 +59,7 @@ void setup()
   loadcell.tare();
   
   // Set Range Values
-  Joystick.setBrakeRange(MIN_VAL, MAX_VAL);
+  Joystick.setXAxisRange(MIN_VAL, MAX_VAL);
 
 #ifdef AUTO_SEND_MODE
   Joystick.begin();
@@ -83,7 +84,7 @@ void loop()
   val = mapf(val, (double)LOADCELL_MIN, (double)LOADCELL_MAX, (double)MIN_VAL, (double)MAX_VAL);
   val = constrain(val, MIN_VAL, MAX_VAL);
 
-  Joystick.setBrake((short)val);
+  Joystick.setXAxis((short)val);
 
 #ifdef VIRTUAL_BTN
   Joystick.setButton(0, val >= BTN_VAL ? 1:0);
